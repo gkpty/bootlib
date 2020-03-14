@@ -1,0 +1,89 @@
+<!-- BOOTSTRAP STARTER-->
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+    
+    <meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<title> Bootlib Forms - Round Form </title>
+		
+		<!-- Google Fonts -->
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto+Mono&display=swap" rel="stylesheet">
+		<!-- Bootstrap 4 -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+		<!-- Font Awesome Icons -->
+		<script src="https://kit.fontawesome.com/e6737eaa92.js" crossorigin="anonymous"></script>
+		<!-- favicon -->
+		<link rel="icon" href="#">
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" href="index.css">
+
+	</head>
+
+<body id="page-top" class="text-center text-md-left">
+
+  <!-- place at center of screen -->
+  <div class="centered">
+
+    <form class="bootlib_round_form" action="#">  
+      <div class="row">
+        <div class="form-group col-md-6 validate-input" data-validate = "Enter your first name">
+          <input type="text" class="input1" autocomplete="given-name" id="firstname" name="firstname" placeholder="First Name" required>
+          <span class="shadow-input"></span>
+        </div>
+        <div class="form-group col-md-6 validate-input input" data-validate = "Enter your last name">
+          <input type="text" class="input1" autocomplete="family-name" id="lastname" name="lastname" placeholder="Last Name" required>
+          <span class="shadow-input"></span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-md-12 validate-input" data-validate = "Enter a valid email">
+          <input type="email" class="input1" autocomplete="email" id="contact_email" name="email" placeholder="Email" required>
+          <span class="shadow-input"></span>
+        </div>  
+      </div>
+      <div class="row">
+        <div class="form-group col-md-12 validate-input" data-validate = "Enter a message">
+          <textarea class="input1" id="message" name="message" placeholder="Message" required></textarea>
+          <span class="shadow-input"></span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 text-left">
+          <h3 id="contact-status" class="sending-text" style="display:none;">Thank you for contacting us</h3>
+        </div>
+      </div>  
+      <div class="row">
+        <div class="col-md-12">
+          <button class="bootlib_round_form-btn btn submit" type="submit" id="contact-btn">
+            <span>
+              Send
+              <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+            </span>
+          </button>
+        </div> 
+      </div>
+    </form>
+  
+  </div>
+
+<!-- Full JQuery -->
+<script
+src="https://code.jquery.com/jquery-3.4.1.min.js"
+integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+crossorigin="anonymous">
+</script>
+
+<!-- Bootstrap core javascript -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>
+<!-- Custom scripts for this template -->
+<script src="index.js"></script>
+
+</body>
+
+</html>
