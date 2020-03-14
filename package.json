@@ -1,0 +1,20 @@
+{
+  "name": "bootlib",
+  "version": "1.0.0",
+  "description": "a template generator and theme library for the torus framework",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "themes",
+    "templates",
+    "torus",
+    "framework"
+  ],
+  "author": "gkpty",
+  "license": "MIT",
+  "dependencies": {
+    "fs": "0.0.1-security"
+  }
+}

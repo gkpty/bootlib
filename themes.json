@@ -1,0 +1,74 @@
+{
+  "coming_soon":{
+    "title": "Coming Soon",
+    "description": "Default theme. Single page bootstrap 4 starter with a heading and a logo",
+    "preview":"",
+    "download":"",
+    "github":"",
+    "deploy":""
+  },
+  "law_firm":{
+    "title": "Law Firm",
+    "description": "Bootstra 4 Theme for a law firm with modal pop-ups",
+    "preview":"",
+    "download":"",
+    "github":"",
+    "deploy":""
+  },
+  "jewlery_store":{
+    "title": "Jewlery Store",
+    "description": "Bootstra 4 Theme for a law firm with modal pop-ups",
+    "preview":"",
+    "download":"",
+    "github":"",
+    "deploy":""
+  },
+  "car_dealership":{
+    "title": "Car Dealership",
+    "description": "Bootstra 4 Theme for a law firm with modal pop-ups",
+    "preview":"",
+    "download":"",
+    "github":"",
+    "deploy":""
+  },
+  "fashion_designer":{
+    "title": "Fashion Designer",
+    "description": "Bootstra 4 Theme for a law firm with modal pop-ups",
+    "preview":"",
+    "download":"",
+    "github":"",
+    "deploy":""
+  },
+  "personal_site":{
+    "title": "Personal Website",
+    "description": "Bootstra 4 Theme for a law firm with modal pop-ups",
+    "preview":"",
+    "download":"",
+    "github":"",
+    "deploy":""
+  },
+  "project_portfolio":{
+    "title": "Porject Portfolio",
+    "description": "Bootstra 4 Theme for a law firm with modal pop-ups",
+    "preview":"",
+    "download":"",
+    "github":"",
+    "deploy":""
+  },
+  "saas_product":{
+    "title": "SaaS Product",
+    "description": "Bootstra 4 Theme for a law firm with modal pop-ups",
+    "preview":"",
+    "download":"",
+    "github":"",
+    "deploy":""
+  },
+  "opensource_project":{
+    "title": "Open Source Project",
+    "description": "Bootstra 4 Theme for a law firm with modal pop-ups",
+    "preview":"",
+    "download":"",
+    "github":"",
+    "deploy":""
+  }
+}
