@@ -1,4 +1,12 @@
 {
+  "empty_template":{
+    "title": "Empty Template",
+    "description": "Has the directory structure and an index html file with an empty body.",
+    "preview":"",
+    "download":"",
+    "github":"",
+    "deploy":""
+  },
   "coming_soon":{
     "title": "Coming Soon",
     "description": "Default theme. Single page bootstrap 4 starter with a heading and a logo",

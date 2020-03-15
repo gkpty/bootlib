@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+  	<head>
+		<!-- Required meta tags -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<!-- Other Tags -->
+		<title>Contactanos - TradeX</title>
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+		<!-- Fonts -->
+		<link href="https://fonts.googleapis.com/css?family=Lato|Raleway" rel="stylesheet">
+		<!-- Optional CSS -->
+		<link rel="stylesheet" href="css/index.css">
+	</head>
+	<body>
+		<!-- Navbar -->
+		<nav class="navbar navbar-expand-lg bg-primary fixed-top">
+			<div class="container">
+				<a class="navbar-brand" href="index.html">
+					<img src="img/tradexauto-logo-2.svg" height="30" width="auto">
+				</a>
+				<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="fa fa-bars text-primary"></span>
+				</button>
+				<div class="collapse navbar-collapse link-hover" id="navbarNavAltMarkup">
+					<div class="navbar-nav ml-auto my-2 my-lg-0">
+						<a class="nav-item nav-link text-primary" href="vehicles.html">Vehiculos</a>
+						<a class="nav-item nav-link text-primary" href="services.html">Servicios</a>
+						<a class="nav-item nav-link text-primary" href="about.html">Sobre Nosotros</a>
+						<a class="nav-item nav-link text-primary" href="blog.html">Blog</a>
+						<a class="nav-item nav-link text-primary" href="contact.html">Contactanos</a>
+					</div>
+				</div>
+			</div>
+		</nav>
+		<!-- Header -->
+		<!-- Sections -->
+		<section class="bg-alternative">
+			<div class="container">
+				<div class="row py-4 py-lg-0">
+					<div class="col-12 text-primary text-center pt-5">
+						<h4>Estamos Para Servirte!</h4>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- contact form -->
+		<section class="pt-0 mt-0 mb-0 pb-0">
+			<div class="row">
+				<div class="col-lg-6 p-0 text-center order-12 order-lg-0">
+					<img class="img-fluid section-img" src="img/panama-city.jpg" alt="" style="height: 100%; object-fit: cover; opacity: .9">
+				</div>
+				<div class="col-lg-6 text-sm-center text-lg-left order-0 order-lg-12">
+					<div class="container p-5 p-lg-0"> 
+						<div class="pb-5">
+							<div class="row first-section">
+								<div class="col-sm-12">
+									<h1 class="text-center mb-4 pt-2 pb-3">Contactanos</h1>
+								</div>
+							</div>
+							<div class="row">
+								<div class="mx-auto">
+									<form name="sentMessage" id="contactus-form" action="#">
+										<div class="control-group col-sm-12">
+											<div class="form-group controls mb-0 pb-2 row">
+												<div class="col-sm-6 floating-label-form-group pl-0">
+													<label>Nombre</label>
+													<input class="form-control" id="firstname" type="text" placeholder="Nombre" name="firstname" required="required" data-validation-required-message="Porfavor ingrese su nombre.">
+													<p class="help-block text-danger"></p>
+												</div>
+												<div class="col-sm-6 floating-label-form-group">
+													<label>Apellido</label>
+													<input class="form-control" id="lastname" type="text" placeholder="Apellido" name="lastname" required="required" data-validation-required-message="Porfavor ingrese su apellido.">
+													<p class="help-block text-danger"></p>
+												</div> 
+											</div>
+										</div>
+										<div class="control-group">
+											<div class="form-group floating-label-form-group validate-input controls mb-0 pb-2">
+												<label>Correo</label>
+												<input class="form-control" id="contact_email" type="email" placeholder="Correo Electronico" required="required" data-validation-required-message="Porfavor ingrese su correo electronico.">
+												<p class="help-block text-danger"></p>
+											</div>
+										</div>
+										<div class="control-group">
+											<div class="form-group floating-label-form-group controls mb-0 pb-2">
+												<label>Telefono</label>
+												<input class="form-control" id="contact_phone" type="tel" placeholder="Número Telefonico" required="required" data-validation-required-message="Porfavor ingrese su número de telefono.">
+												<p class="help-block text-danger"></p>
+											</div>
+										</div>
+										<div class="control-group">
+											<div class="form-group floating-label-form-group controls mb-0 pb-2">
+												<label>Mensaje</label>
+												<textarea class="form-control" id="contact_message" rows="5" placeholder="Mensaje" required="required" data-validation-required-message="Porfavor ingrese un mensaje"></textarea>
+												<p class="help-block text-danger"></p>
+											</div>
+										</div>
+										<br>
+										<div class="row">
+											<div class="col-sm-12 text-left">
+												<p id="contact-status" class="sending-text" style="display:none">Gracias por Contactarnos.</p>
+											</div>
+										</div>  
+										<div class="form-group">
+											<button type="submit" class="btn btn-primary btn-lg" id="contact-btn">Send</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+			
+		<script>
+		//lambda function URL
+		var URL = "https://0jwkjec6wi.execute-api.us-east-1.amazonaws.com/development/sendMail";
+		</script>
+
+		<!-- Social -->
+	    <section class="bg-alternative">
+	        <div class="container">
+	            <div class="row social-row">
+	                <div class="col-sm-12 text-center">
+	                    <div class="social-icons">
+	                        <a href="https://wa.me/50769461458?text=Hola%20me%20intereso%20contactarte%20por%20TradeXAuto%20">
+	                            <i class="fa fa-whatsapp"></i>
+	                        </a>
+	                        <a href="https://www.facebook.com/tradexauto/">
+	                            <i class="fa fa-facebook-f"></i>
+	                        </a>
+	                        <a href="https://www.instagram.com/tradexauto/">
+	                            <i class="fa fa-instagram"></i>
+	                        </a>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </section>
+
+	    <!-- Footer -->
+	    <footer class="bg-primary py-4">
+	        <div class="container-fluid">
+	            <div class="row small text-center">
+	                <div class="col-md-6">
+	                    <div>Copyright &copy; 2019 - TradeX Auto </div>
+	                </div>
+	                <div class="col-md-6">
+	                    <div> Powered By <a href="https://torus-digital.com"> Torus Digital </a></div>
+	                </div>
+	            </div>
+	        </div>
+	    </footer>
+
+		
+		<!-- jQuery first & Bootstrap JS -->
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+		<!-- Optional JavaScript -->
+		<script src="js/contact.js"></script>
+	</body>
+</html>

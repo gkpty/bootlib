@@ -1,0 +1,84 @@
+
+		<!DOCTYPE html>
+		<html lang="en">
+			<head>
+				<meta charset="utf-8">
+				<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+				<meta name="description" content="Custom serverless forms for your website">
+				<title>sefsuggestions Form</title>
+				<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+				<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+			</head>
+			<body class="p-5 bg-light">
+				<!-- CONTACT SECTION -->
+				<section class="bg-white py-4">
+					<div class="container">
+						<div class="row">
+								<div class="col-md-6">
+									<h4 class="h2 pb-2">Contact Us</h4>
+									<!-- FORM BY SUPER EASY FORMS -->
+									<form id="sefsuggestions-form" alt="Form by Super Easy Forms" class="pb-3" action="#">
+										
+				<label for="message" class="small mb-0">Message</label>
+				<textarea type="text" class="form-control" id="message" name="message" placeholder="Message" required></textarea>
+			
+										<div class="g-recaptcha pt-3" data-sitekey="6LfdUNIUAAAAADc_ar_gObrsH75AnIjjCu13sgeZ"></div>   
+										<h5 id="sefsuggestions-status" class="text-secondary" style="display:none;">Thanks for Contacting Us</h5>
+										<button class="btn btn-primary mt-3" type="submit" id="sefsuggestions-btn">Send</button>
+									</form>
+									<small>made with <a href="http://supereasyforms.com">super easy forms</a> <small> <!-- it's bad etiquette to use free stuff without giving some cred to the creators :) -->
+								</div>   
+						</div>
+					</div>         
+				</section>
+				<!--Javascript-->
+				<script
+					src="https://code.jquery.com/jquery-3.4.1.min.js"
+					integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+					crossorigin="anonymous">
+				</script>
+				<script>
+					$(function(){
+						$('#sefsuggestions-form').submit(function(e){
+								e.preventDefault();
+								let captcha = grecaptcha.getResponse();
+								if(captcha.length < 1){
+									alert('please fill out the recaptcha')
+								}
+								else {
+									$.ajax({
+											type: "POST",
+											url: "https://bdy3silvfd.execute-api.us-east-1.amazonaws.com/DeploymentStage/",
+											dataType: "json",
+											contentType: "application/json",
+											data: JSON.stringify( { "id": "","message": $('#message').val(), "captcha":captcha } ),
+											beforeSend: function(data) {
+													$('#sefsuggestions-btn').prop('disabled', true);
+													$('#sefsuggestions-form :input').prop('disabled', true);
+													$('#sefsuggestions-status').html('Sending...').show();
+											},
+											success: function(data, status, jqXHR) {
+													console.log(data);
+													if(status === 'success'){
+														$('#sefsuggestions-status').text("We'll get back to you soon").show();
+														$('#sefsuggestions-form :input').removeProp('disabled');
+														$('#sefsuggestions-btn').removeProp('disabled');
+													}
+													else {
+														$('#sefsuggestions-status').text('Error. Please try again.').show();
+														$('#sefsuggestions-form :input').removeProp('disabled');
+														$('#sefsuggestions-btn').removeProp('disabled');
+													}
+											},
+											error: function(jqXHR, textStatus, errorThrown) {
+												$('#sefsuggestions-status').text('Error. Please check your network connection and try again.').show();
+												$('#sefsuggestions-form :input').removeProp('disabled');
+												$('#sefsuggestions-btn').removeProp('disabled');
+											}
+									});
+								}
+						}); 				
+					});
+				</script>
+			</body>
+		</html>

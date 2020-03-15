@@ -1,0 +1,122 @@
+html,body {
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
+section, header {
+  overflow-x: hidden;
+}
+
+header.masthead {
+  max-height: 100vh;
+}
+
+
+.bg-primary {
+  background-color: #E1F5FE !important;
+}
+
+a {
+  color: #0288D1;
+}
+
+.btn-primary {
+  background-color: #0288D1;
+}
+
+.action-heading {
+  padding: 4%;
+}
+
+@media(min-width: 800px){
+  .action-heading {
+    padding-top: 10%;
+    padding-left: 20%;
+    padding-right: 20%;
+    margin-top: -10%;
+  }
+  .navbar-brand {
+    margin-left: 4%;
+  }
+}
+
+
+
+.stack-icon {
+	 max-height: 11vh; 
+	 width: auto;
+	 max-width: 100%;
+	 text-align: center;
+}
+
+ul.social-buttons {
+  margin-bottom: 0;
+}
+
+ul.social-buttons li a {
+  display: inline-block;
+  color: white;
+  background-color: #0288D1;
+  opacity: .8;
+  border-radius: 100%;
+  font-size: 1.5rem;
+  line-height: 3rem;
+  width: 3rem;
+  height: 3rem;
+}
+
+ul.social-buttons li a:active, ul.social-buttons li a:focus, ul.social-buttons li a:hover {
+  background-color: #efefef;
+  color: #000F08;
+}
+
+.social-buttons li {
+  pointer-events: auto !important;
+}
+
+.social-row {
+  position: fixed; 
+  z-index: 2; 
+  top: 90vh;
+  pointer-events: none;
+  width: 100%;
+  left: 50%;
+  margin-left: -50%;
+}
+
+@media (min-width: 500px) {
+  ul.social-buttons li a {
+    font-size: 1.5rem;
+    line-height: 3rem;
+    width: 3rem;
+    height: 3rem;
+  }
+
+}
+
+@media (min-width: 800px) {
+  .social-row {
+    right: 0px;
+    margin-bottom: 2rem;
+    top: 60vh;
+    padding: 0px;
+    display: block;
+    width: 0%;
+    left: 0%;
+    margin-left: 7%;
+    }
+  ul.social-buttons li a {
+  	margin-bottom: 6px;
+  }
+  header.masthead {
+  	height: 56vh;
+  }
+}
+
+@media (max-width: 500px) {
+	h1 {
+		font-size: 200%;
+	}
+}

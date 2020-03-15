@@ -1,0 +1,11 @@
+body,html {
+  height:100vh; 
+  width:100%; 
+  overflow-x: hidden;
+}
+.bg-primary {
+  background-color: #1c08a0 !important;
+}
+.text-primary {
+  color: #1c08a0 !important;
+}
