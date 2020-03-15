@@ -2,6 +2,7 @@
   "navigation":{
     "ghost_nav":{},
     "flat_nav":{},
+    "basic_nav":{},
     "search_nav":{},
     "side_nav":{}
   },
@@ -9,7 +10,10 @@
     "video_header":{},
     "split_header":{},
     "background_image_centered_text":{},
-    "svg_animation":{}
+    "svg_animation_sunset":{
+      "title":"Sunset in the city SVG animation",
+      "description":"A full sized header with an interactive SVG animation of a sunset and Panama City in the background."
+    }
   },
   "sections":{
     "centered_section":{},
@@ -33,7 +37,10 @@
     "classic_bootstrap":{},
     "inline_form":{},
     "modern_form":{},
-    "round_form":{}
+    "round_form":{
+      "title":"Click and glow Round Form",
+      "description":"A contact form with round input fields. The input fields have a glow animation when clicked."
+    }
   },
   "carousels":{
     "testimonial_corusel":{}
