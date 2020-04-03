@@ -18,10 +18,9 @@ function buildTheme(themeName, filename, components, svg, mergeCss, mergeJs){
   }
   let rawdata = fs.readFileSync('components.json')
   let obj = JSON.parse(rawdata);
-  let compArr = components.split('+');
   let scriptLinks = []
   let styleLinks = []
-  for(let comp of compArr){
+  for(let comp of components){
     if(obj[comp]){
       //html
       if(fs.existsSync(`components/${comp}/index.html`)){
