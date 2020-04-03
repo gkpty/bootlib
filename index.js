@@ -14,22 +14,52 @@ function buildTheme(themeName, filename, components){
   let obj = JSON.parse(rawdata);
   let newTemplate = ""
   let compArr = components.split('+');
-  let beginTemplate = ""
-  let scripts = ``
-  let endTemplate = ""
+  let newTemplate = ""
+  let scriptLinks = []
+
   for(let comp of compArr){
     if(obj[comp]){
-      //read the component html
-      let compHtml = fs.readFileSync(`components/${comp}/index.html`)
-      newTemplate += compHtml
+      //html
+      if(fs.existsSync(`components/${comp}/index.html`)){
+        let compHtml = fs.readFileSync(`components/${comp}/index.html`)
+        newTemplate += '\n' + compHtml
+      }
+      else throw new Error('component doesnt contain an index.html')
+      //css
       if(fs.existsSync(`components/${comp}/index.css`)){
         let compCss = fs.readFileSync(`components/${comp}/index.html`)
         indexcss += compCss;
       }
+      //js
       if(fs.existsSync(`components/${comp}/index.js`)){
-        //copy index.js into themes/themeName/js/themeName.js
-        //add script themeName.js in the scripts
+        let compJs = fs.readFileSync(`components/${comp}/index.js`)
+        let scriptlink = `themes/${themeName}/js/${comp}.js`
+        fs.writeFileSync(scriptlink, compJs)
+        scriptLinks.push(scriptlink)
+      }
+      //svg
+      if(fs.existsSync(`components/${comp}/svg`)){
+        let sizes = ['mobile', 'tablet', 'web']
+        for(let size of sizes){
+          buildSvg(size)
+        } 
       }
     }
+    else throw new Error(`Component ${comp} doesnt exist`)
   }
 }
+
+buildSvg(component){
+  //check if the compoent contains an svg
+    //use that svg
+  //if not check for the standard compoent in the category
+    //add that svg
+  //if not throw an error no svg compoennt present for that category
+}
+
+//await build the html
+//then add all the js links in the html
+//await merge the css then save
+//add the svg component
+//if the component dpesnt cpntain an
+
