@@ -6,29 +6,32 @@ function buildTheme(themeName, filename, components){
   //create a directory for the theme in 
   //create a css directory and create an index.css file
   //create a js directory and create an index.js file
-  let indexcss = ""
+  let indexCss = ""
+  let indexHtml = ""
+  let indexSvg = {
+    "mobile":"",
+    "tablet":"",
+    "web":""
+  }
   if(fs.existsSync(`themes/${themeName}/css/index.css`)){
     indexcss = fs.readFileSync(`themes/${themeName}/css/index.css`)
   }
   let rawdata = fs.readFileSync('components.json')
   let obj = JSON.parse(rawdata);
-  let newTemplate = ""
   let compArr = components.split('+');
-  let newTemplate = ""
   let scriptLinks = []
-
   for(let comp of compArr){
     if(obj[comp]){
       //html
       if(fs.existsSync(`components/${comp}/index.html`)){
         let compHtml = fs.readFileSync(`components/${comp}/index.html`)
-        newTemplate += '\n' + compHtml
+        indexHtml += '\n' + compHtml
       }
       else throw new Error('component doesnt contain an index.html')
       //css
       if(fs.existsSync(`components/${comp}/index.css`)){
         let compCss = fs.readFileSync(`components/${comp}/index.html`)
-        indexcss += compCss;
+        indexCss += compCss;
       }
       //js
       if(fs.existsSync(`components/${comp}/index.js`)){
@@ -38,23 +41,39 @@ function buildTheme(themeName, filename, components){
         scriptLinks.push(scriptlink)
       }
       //svg
-      if(fs.existsSync(`components/${comp}/svg`)){
-        let sizes = ['mobile', 'tablet', 'web']
-        for(let size of sizes){
-          buildSvg(size)
-        } 
-      }
+      buildSvg(comp)
     }
     else throw new Error(`Component ${comp} doesnt exist`)
   }
 }
 
-buildSvg(component){
-  //check if the compoent contains an svg
-    //use that svg
-  //if not check for the standard compoent in the category
-    //add that svg
-  //if not throw an error no svg compoennt present for that category
+function buildSvg(component){
+  let compType = component.split("/")[0]
+  if(fs.existsSync(`components/${comp}/svg`)){
+    addSvg(`components/${comp}/svg`)
+  }
+  else if(fs.existsSync(`components/${compType}/standard/svg`)){
+    addSvg(`components/${compType}/standard/svg`)
+  }
+  else throw new Error('no svg compoennt present for that category')
+}
+
+function addSvg(indexSvg, component){
+  //remove top and bottom
+  let bottom = '</svg>'
+  let compPath = `components/${component}/svg`
+  let sizes = [
+    'mobile',
+    'tablet',
+    'web'
+  ]
+  for(let size of sizes){
+    let componentSvg = fs.readFileSync(`${compPath}/${size}.svg`, 'utf8')
+    let top = componentSvg.split(">")[0]+">"
+    let svgPiece = componentSvg.replace(top, "").substr(0, componentSvg.lastIndexOf(bottom))
+    indexSvg[size] += svgPiece;
+  }
+  //add to the length of the part
 }
 
 //await build the html
