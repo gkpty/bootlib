@@ -2,20 +2,21 @@
   "navigation":{
     "ghost_nav":{},
     "flat_nav":{},
-    "basic_nav":{},
+    "standard_nav":{},
     "search_nav":{},
     "side_nav":{}
   },
   "headers":{
     "video_header":{},
     "split_header":{},
-    "background_image_centered_text":{},
+    "centered_title":{},
+    "background_image":{},
     "svg_animation_sunset":{
       "title":"Sunset in the city SVG animation",
       "description":"A full sized header with an interactive SVG animation of a sunset and Panama City in the background."
     }
   },
-  "sections":{
+  "static_sections":{
     "centered_section":{},
     "split_section":{}
   },
