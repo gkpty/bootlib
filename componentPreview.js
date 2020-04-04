@@ -143,10 +143,10 @@ function buildHtmlPreview(componentPath, fullSection){
         <link rel="stylesheet" href="index.css">
       </head>
       <body id="page-top" class="text-center text-md-left">
-        ${fullSection ? '<div class="centered">' : ""}
+        ${fullSection ? "" : '<div class="centered">'}
     `
     let bottom = `
-        ${fullSection ? '</div>' : ""}
+        ${fullSection ? "" : '<div class="centered">'}
         <!-- Full JQuery -->
         <script
         src="https://code.jquery.com/jquery-3.4.1.min.js"
