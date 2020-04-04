@@ -1,84 +1,84 @@
-//optimize svg
+var fs = require('fs')
+
 function optimizeSvg(filePath){
-  var fs = require('fs'),
   SVGO = require('svgo'),
-    svgo = new SVGO({
-      plugins: [{
-        cleanupAttrs: true,
-      }, {
-        removeDoctype: true,
-      },{
-        removeXMLProcInst: true,
-      },{
-        removeComments: true,
-      },{
-        removeMetadata: true,
-      },{
-        removeTitle: true,
-      },{
-        removeDesc: true,
-      },{
-        removeUselessDefs: true,
-      },{
-        removeEditorsNSData: true,
-      },{
-        removeEmptyAttrs: true,
-      },{
-        removeHiddenElems: true,
-      },{
-        removeEmptyText: true,
-      },{
-        removeEmptyContainers: true,
-      },{
-        removeViewBox: false,
-      },{
-        cleanupEnableBackground: true,
-      },{
-        convertStyleToAttrs: true,
-      },{
-        convertColors: true,
-      },{
-        convertPathData: true,
-      },{
-        convertTransform: true,
-      },{
-        removeUnknownsAndDefaults: true,
-      },{
-        removeNonInheritableGroupAttrs: true,
-      },{
-        removeUselessStrokeAndFill: true,
-      },{
-        removeUnusedNS: true,
-      },{
-        cleanupIDs: true,
-      },{
-        cleanupNumericValues: true,
-      },{
-        moveElemsAttrsToGroup: true,
-      },{
-        moveGroupAttrsToElems: true,
-      },{
-        collapseGroups: true,
-      },{
-        removeRasterImages: false,
-      },{
-        mergePaths: true,
-      },{
-        convertShapeToPath: true,
-      },{
-        sortAttrs: true,
-      }]
+  svgo = new SVGO({
+    plugins: [{
+      cleanupAttrs: true,
+    }, {
+      removeDoctype: true,
+    },{
+      removeXMLProcInst: true,
+    },{
+      removeComments: true,
+    },{
+      removeMetadata: true,
+    },{
+      removeTitle: true,
+    },{
+      removeDesc: true,
+    },{
+      removeUselessDefs: true,
+    },{
+      removeEditorsNSData: true,
+    },{
+      removeEmptyAttrs: true,
+    },{
+      removeHiddenElems: true,
+    },{
+      removeEmptyText: true,
+    },{
+      removeEmptyContainers: true,
+    },{
+      removeViewBox: false,
+    },{
+      cleanupEnableBackground: true,
+    },{
+      convertStyleToAttrs: true,
+    },{
+      convertColors: true,
+    },{
+      convertPathData: true,
+    },{
+      convertTransform: true,
+    },{
+      removeUnknownsAndDefaults: true,
+    },{
+      removeNonInheritableGroupAttrs: true,
+    },{
+      removeUselessStrokeAndFill: true,
+    },{
+      removeUnusedNS: true,
+    },{
+      cleanupIDs: true,
+    },{
+      cleanupNumericValues: true,
+    },{
+      moveElemsAttrsToGroup: true,
+    },{
+      moveGroupAttrsToElems: true,
+    },{
+      collapseGroups: true,
+    },{
+      removeRasterImages: false,
+    },{
+      mergePaths: true,
+    },{
+      convertShapeToPath: true,
+    },{
+      sortAttrs: true,
+    }]
+  });
+  let subPath = filePath.substr(0, filePath.lastIndexOf("/"))
+  let fileName = filePath.substr(filePath.lastIndexOf("/")+1)
+  fs.readFile(filePath, 'utf8', (err, data) => {
+    if (err) throw err;
+    svgo.optimize(data, {path: filePath}).then(function(result) {
+      //console.log(result.data, result.info);
+      let prettySVG = pretifyMarkup(result.data)
+      fs.writeFileSync(`${subPath}/optimized-${fileName}`, prettySVG)
     });
-    let subPath = filePath.substr(0, filePath.lastIndexOf("/"))
-    let fileName = filePath.substr(filePath.lastIndexOf("/")+1)
-    fs.readFile(filePath, 'utf8', (err, data) => {
-      if (err) throw err;
-      svgo.optimize(data, {path: filePath}).then(function(result) {
-        //console.log(result.data, result.info);
-        let prettySVG = pretifyMarkup(result.data)
-        fs.writeFileSync(`${subPath}/optimized-${fileName}`, prettySVG)
-      });
-    });
+  });
 }
 
 function pretifyMarkup(markup){
@@ -121,15 +121,15 @@ function pretifyMarkup(markup){
 
 //build the component preview
 //add head and scripts
-function buildHtmlPreview(component, componentName, fullSection){
+function buildHtmlPreview(componentPath, fullSection){
   //read the component
-  let pathArr = component.split('/')
+  let pathArr = componentPath.split('/')
   if(pathArr.length > 2) throw new Error('invalid component')
   else if(pathArr.length < 2) throw new Error('component must comntain a section')
   else  {
     let section = pathArr[0]
     let name = pathArr[1]
-    let html = fs.readFileSync(`${componentPath}/index.html`, 'utf8')
+    let html = fs.readFileSync(`components/${componentPath}/index.html`, 'utf8')
     let top = `
     <!DOCTYPE html>
     <html lang="en">
@@ -162,8 +162,13 @@ function buildHtmlPreview(component, componentName, fullSection){
     </html>
     `
     let newHtml = top + html + bottom;
+    fs.writeFileSync(`components/${componentPath}/preview.html`, newHtml)
     return newHtml;
   }
 }
 
-optimizeSvg('components/static_sections/standard/svg/web.svg')
+module.exports = {
+  optimizeSvg,
+  pretifyMarkup,
+  buildHtmlPreview
+}
