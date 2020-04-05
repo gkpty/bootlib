@@ -3,15 +3,15 @@ var fs = require('fs');
 
 async function buildTheme(themeName, filename, components, svg, mergeCss, mergeJs){
   //check that there isnt already a theme with the themeName
-  createDir(`themes/${themeName}`).then((data) => {
+  createDir(`themes/${themeName}`).then(async (data) => {
     console.log(data)
-    await createDir(`themes/${themeName}/site`).then((data) => {
+    await createDir(`themes/${themeName}/site`).then(async (data) => {
       console.log(data)
       await createDir(`themes/${themeName}/site/js`).then((data)=>{console.log(data)})
       await createDir(`themes/${themeName}/site/css`).then((data)=>{console.log(data)})
       await createDir(`themes/${themeName}/site/img`).then((data)=>{console.log(data)})
     })
-    await createDir(`themes/${themeName}/toruf`).then((data) => {
+    await createDir(`themes/${themeName}/toruf`).then(async (data) => {
       console.log(data)
       await createDir(`themes/${themeName}/toruf/components`).then((data)=>{console.log(data)})
       await createDir(`themes/${themeName}/toruf/objects`).then((data)=>{console.log(data)})
@@ -20,9 +20,10 @@ async function buildTheme(themeName, filename, components, svg, mergeCss, mergeJ
     })
     await createDir(`themes/${themeName}/mockups`).then((data) => {
       console.log(data)
-      await createDir(`themes/${themeName}/mockups/svg`).then((data)=>{console.log(data)})
+      createDir(`themes/${themeName}/mockups/svg`).then((data)=>{console.log(data)})
     })
-  }).then(()=>{
+  }).then(async ()=>{
+    console.log('created project directories')
     let indexHtml = "";
     let indexToruf = "";
     let indexCss = "";
@@ -37,53 +38,59 @@ async function buildTheme(themeName, filename, components, svg, mergeCss, mergeJ
     let rawdata = fs.readFileSync('components.json')
     let obj = JSON.parse(rawdata);
     for(let comp of components){
-      if(obj[comp]){
-        let compName = comp.replace("/","_");
-        await createDir(`themes/${themeName}/toruf/components/${compName}`).then((data)=>{
-          console.log(data)
-          if(fs.existsSync(`components/${comp}/index.html`)){
-            await fs.promises.writeFile(`themes/${themeName}/toruf/components/${compName}/index.html`, compMarkup)
-            let compMarkup = fs.readFileSync(`components/${comp}/index.html`)
-            let compToruf = '<#' + compName.toUpperCase() + '>'
-            indexHtml += compMarkup + '\n'
-            indexToruf += compToruf + '\n'
-          }
-          else throw new Error('component doesnt contain an index.html')
-          if(fs.existsSync(`components/${comp}/index.css`)){
-            await fs.promises.writeFile(`themes/${themeName}/toruf/components/${compName}/index.css`, compCss)
-            let compCss = fs.readFileSync(`components/${comp}/index.html`)
-            if(mergeCss) indexCss += compCss;
-            else {
-              let stylelink = `themes/${themeName}/css/${comp}.css`
-              fs.writeFileSync(stylelink, compCss)
-              styleLinks.push(`css/${comp}.css`) 
+      let compSection = comp.split("/", 2)[0];
+      let compName = comp.split("/", 2)[1];
+      if(obj[compSection]){
+        console.log('OBJECT', typeof obj[compSection][compName])
+        if(typeof obj[compSection][compName] !== "undefined"){
+          let compName = comp.replace("/","_");
+          createDir(`themes/${themeName}/toruf/components/${compName}`).then(async (data)=>{
+            console.log(data)
+            if(fs.existsSync(`components/${comp}/index.html`)){
+              await fs.promises.writeFile(`themes/${themeName}/toruf/components/${compName}/index.html`, compMarkup)
+              let compMarkup = fs.readFileSync(`components/${comp}/index.html`)
+              let compToruf = '<#' + compName.toUpperCase() + '>'
+              indexHtml += compMarkup + '\n'
+              indexToruf += compToruf + '\n'
             }
-          }
-          if(fs.existsSync(`components/${comp}/index.js`)){
-            await fs.promises.writeFile(`themes/${themeName}/toruf/components/${compName}/index.js`, compJs)
-            let compJs = fs.readFileSync(`components/${comp}/index.js`)
-            if(mergeJs) indexJs += compJs;
-            else {
-              let scriptlink = `themes/${themeName}/js/${comp}.js`
-              await fs.promises.writeFile(scriptlink, compJs)
-              scriptLinks.push(`js/${comp}.js`) 
+            else throw new Error('component doesnt contain an index.html')
+            if(fs.existsSync(`components/${comp}/index.css`)){
+              await fs.promises.writeFile(`themes/${themeName}/toruf/components/${compName}/index.css`, compCss)
+              let compCss = fs.readFileSync(`components/${comp}/index.html`)
+              if(mergeCss) indexCss += compCss;
+              else {
+                let stylelink = `themes/${themeName}/css/${comp}.css`
+                fs.writeFileSync(stylelink, compCss)
+                styleLinks.push(`css/${comp}.css`) 
+              }
             }
-          }
-          if(svg) {
-            let compType = comp.split("/")[0]
-            if(fs.existsSync(`components/${comp}/svg`)){
-              await addSvg(comp, indexSvg, svgHeights, svgStyles)
+            if(fs.existsSync(`components/${comp}/index.js`)){
+              await fs.promises.writeFile(`themes/${themeName}/toruf/components/${compName}/index.js`, compJs)
+              let compJs = fs.readFileSync(`components/${comp}/index.js`)
+              if(mergeJs) indexJs += compJs;
+              else {
+                let scriptlink = `themes/${themeName}/js/${comp}.js`
+                await fs.promises.writeFile(scriptlink, compJs)
+                scriptLinks.push(`js/${comp}.js`) 
+              }
             }
-            else if(fs.existsSync(`components/${compType}/standard/svg`)){
-              await addSvg(`${compType}/standard`, indexSvg, svgHeights, svgStyles)
+            if(svg) {
+              let compType = comp.split("/")[0]
+              if(fs.existsSync(`components/${comp}/svg`)){
+                await addSvg(comp, indexSvg, svgHeights, svgStyles)
+              }
+              else if(fs.existsSync(`components/${compType}/standard/svg`)){
+                await addSvg(`${compType}/standard`, indexSvg, svgHeights, svgStyles)
+              }
+              else throw new Error(`no svg component present for the ${compType} category`)
             }
-            else throw new Error(`no svg component present for the ${compType} category`)
-          }
-        });
+          });
+        }
+        else throw new Error(`Component ${compName} doesnt exist`)
       }
-      else throw new Error(`Component ${comp} doesnt exist`)
+      else throw new Error(`Component section ${compSection} doesnt exist`)
     }
-  }).then(()=> {
+  }).then(async ()=> {
     if(mergeCss) await fs.promises.writeFile(`themes/${themeName}/site/css/${filename}.css`)
     if(mergeJs) await fs.promises.writeFile(`themes/${themeName}/site/js/${filename}.js`)
     await saveHtml(themeName, filename, indexHtml, mergeCss, mergeJs)
@@ -106,14 +113,14 @@ async function saveSvg(filename, svgs, heights, styles){
       `
       let bottom = '</svg>'
       let svgMockup = top + svgs[size] + bottom;
-      await fs.promises.writeFile(`themes/${themeName}/mockups/svg/${filename}-${size}.svg`, svgMockup)
+      fs.promises.writeFile(`themes/${themeName}/mockups/svg/${filename}-${size}.svg`, svgMockup)
     }
     resolve('success')
   })
 }
 
 async function saveHtml(themeName, filename, htmlBody, templateBody, mergeCss, mergeJs){
-  return new Promise((resolve) => {
+  return new Promise(async (resolve) => {
     let scripts = ""
     if(mergeJs) scripts = `<script src="js/index.js"></script>\n`
     else for(let src of srccriptLinks) scripts += `<script src="${src}"></script>\n`
@@ -152,8 +159,8 @@ async function addSvg(component, indexSvg, svgHeights, svgStyles){
     let compPath = `components/${component}/svg`
     let sizes = ['mobile','tablet','web']
     for(let size of sizes){
-      let svgComp = fs.promises.readFile(`${compPath}/${size}.svg`, 'utf8').then((data) => {
-        await getSvgBody(svgComp, svgHeights[size], svgStyles[size]).then((res) => {
+      fs.promises.readFile(`${compPath}/${size}.svg`, 'utf8').then((svgComp) => {
+        getSvgBody(svgComp, svgHeights[size], svgStyles[size]).then((res) => {
           indexSvg[size] += res.svg;
           svgHeights[size] += res.height;
           svgStyles[size] += res.styles;
@@ -164,7 +171,7 @@ async function addSvg(component, indexSvg, svgHeights, svgStyles){
   })
 }
 
-async function getSvgBody(svg, height, styles) {
+function getSvgBody(svg, height, styles) {
   return new Promise((resolve) => {
     let elems = ["svg","defs","style","title"];
     let svgBody = svg;
@@ -187,7 +194,7 @@ async function createDir(dir){
   return new Promise((resolve, reject)=>{
     if(fs.existsSync(dir)) resolve(`directory ${dir} already exists`)
     else {
-      await fs.promises.mkdir(dir).then(resolve(`Created the ${dir} directory`))
+      fs.promises.mkdir(dir).then(resolve(`Created the ${dir} directory`))
       .catch((err)=>{reject(err)})
     }
   })

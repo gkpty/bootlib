@@ -1,8 +1,10 @@
 {
-  "navigation":{
+  "nav":{
     "ghost_nav":{},
     "flat_nav":{},
-    "standard_nav":{},
+    "standard":{
+      "title": "Standard Nav"
+    },
     "search_nav":{},
     "side_nav":{}
   },
