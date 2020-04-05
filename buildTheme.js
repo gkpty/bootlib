@@ -42,6 +42,7 @@ async function buildTheme(themeName, filename, components, svg, mergeCss, mergeJ
       let compName = comp.split("/", 2)[1];
       if(obj[compSection]){
         console.log('OBJECT', typeof obj[compSection][compName])
+        //if fs.existsSync(`components/${comp}`)
         if(typeof obj[compSection][compName] !== "undefined"){
           let compName = comp.replace("/","_");
           createDir(`themes/${themeName}/toruf/components/${compName}`).then(async (data)=>{
