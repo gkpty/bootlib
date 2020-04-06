@@ -178,7 +178,7 @@ async function addSvg(component, indexSvg, svgHeights, svgStyles){
   })
 }
 
-function getSvgBody(svg) {
+function getSvgBody(svg, svgHeight) {
   return new Promise((resolve) => {
     let elems = ["svg","defs","style","title"];
     let svgBody = svg;
@@ -196,8 +196,36 @@ function getSvgBody(svg) {
         }
         else if(elem === 'title') svgBody = svgBody.replace(contents, "")
         svgBody = svgBody.replace('<'+elem+begin_tag+'>', "").replace(`</${elem}>`, "")
+        /* for(let height of svgBody.split("y=")){
+          let delim = height.substr(0,1)
+          let heightStr = height.split(delim)[1]
+          newHeight = svgHeight + parseInt(heightStr)
+          let base = 'y='+delim
+          svgBody.replace(base+heightStr, base+newHeight.toString())
+        } */
+        /* let rectArr = svgBody.split("<rect")
+        for(let i =1; i<rectArr.length; i++){
+          let rectPc = rectArr[i].split(">")[0]
+          if(rectPc.includes("y=")){
+            let height = rectPc.split("y=")[1]
+            let delim = height.substr(0,1)
+            let heightStr = height.split(delim)[1]
+            newHeight = svgHeight + parseInt(heightStr)
+            let base = 'y='+delim
+            svgBody.replace(base+heightStr, base+newHeight.toString())
+          }
+          else svgBody = svgBody.replace("<rect"+rectArr[i], `<rect y="${svgHeight.toString()}"`+rectArr[i])
+        } */
+        /* for(let trans of svgBody.split("translate(")){
+          let nums = trans.split(")")[0];
+          let widthStr = nums.split(" ")[0]
+          let heightStr = nums.split(" ")[1]
+          let newHeight = parseInt(heightStr) + svgHeight
+          svgBody = svgBody.replace(`translate(${nums})`, 'translate('+widthStr+" "+newHeight.toString()+")")
+        } */
       }
     }
+    console.log(svgBody, '\n\n')
     resolve({"svg":svgBody, "height":newHeight, "styles":newStyles});
   })
 }
