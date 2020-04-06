@@ -2,9 +2,9 @@ var {buildTheme} = require('../buildTheme')
 
 let components = [
   'nav/standard',
-  'headers/standard',
-  'section/split',
-  'section/standard',
+  'header/standard',
+  'static_section/split',
+  'static_section/standard',
   'footer/standard'
 ]
 

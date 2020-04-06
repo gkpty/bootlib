@@ -3,6 +3,13 @@ var fs = require('fs');
 
 async function buildTheme(themeName, filename, components, svg, mergeCss, mergeJs){
   //check that there isnt already a theme with the themeName
+  var indexHtml = "";
+  var indexToruf = "";
+  var scriptLinks = [];
+  var styleLinks = [];
+  var indexSvg = {"mobile":"","tablet":"","web":""};
+  var svgStyles = {"mobile":"","tablet":"","web":""};
+  var svgHeights = {"mobile":0,"tablet":0,"web":0};
   createDir(`themes/${themeName}`).then(async (data) => {
     console.log(data)
     await createDir(`themes/${themeName}/site`).then(async (data) => {
@@ -24,17 +31,10 @@ async function buildTheme(themeName, filename, components, svg, mergeCss, mergeJ
     })
   }).then(async ()=>{
     console.log('created project directories')
-    let indexHtml = "";
-    let indexToruf = "";
     let indexCss = "";
     if(fs.existsSync(`themes/${themeName}/css/index.css`)) indexCss = fs.readFileSync(`themes/${themeName}/css/index.css`);
     let indexJs = "";
     if(fs.existsSync(`themes/${themeName}/js/index.js`)) indexJs = fs.readFileSync(`themes/${themeName}/js/index.js`);
-    let scriptLinks = [];
-    let styleLinks = [];
-    let indexSvg = {"mobile":"","tablet":"","web":""};
-    let svgStyles = {"mobile":"","tablet":"","web":""};
-    let svgHeights = {"mobile":0,"tablet":0,"web":0};
     let rawdata = fs.readFileSync('components.json')
     let obj = JSON.parse(rawdata);
     for(let comp of components){
@@ -42,37 +42,36 @@ async function buildTheme(themeName, filename, components, svg, mergeCss, mergeJ
       let compName = comp.split("/", 2)[1];
       if(obj[compSection]){
         console.log('OBJECT', typeof obj[compSection][compName])
-        //if fs.existsSync(`components/${comp}`)
-        if(typeof obj[compSection][compName] !== "undefined"){
+        if(fs.existsSync(`components/${comp}`)){
           let compName = comp.replace("/","_");
           createDir(`themes/${themeName}/toruf/components/${compName}`).then(async (data)=>{
             console.log(data)
             if(fs.existsSync(`components/${comp}/index.html`)){
-              await fs.promises.writeFile(`themes/${themeName}/toruf/components/${compName}/index.html`, compMarkup)
               let compMarkup = fs.readFileSync(`components/${comp}/index.html`)
+              await fs.promises.writeFile(`themes/${themeName}/toruf/components/${compName}/index.html`, compMarkup)
               let compToruf = '<#' + compName.toUpperCase() + '>'
               indexHtml += compMarkup + '\n'
               indexToruf += compToruf + '\n'
             }
             else throw new Error('component doesnt contain an index.html')
             if(fs.existsSync(`components/${comp}/index.css`)){
-              await fs.promises.writeFile(`themes/${themeName}/toruf/components/${compName}/index.css`, compCss)
               let compCss = fs.readFileSync(`components/${comp}/index.html`)
+              await fs.promises.writeFile(`themes/${themeName}/toruf/components/${compName}/index.css`, compCss)
               if(mergeCss) indexCss += compCss;
               else {
-                let stylelink = `themes/${themeName}/css/${comp}.css`
+                let stylelink = `themes/${themeName}/site/css/${compName}.css`
                 fs.writeFileSync(stylelink, compCss)
-                styleLinks.push(`css/${comp}.css`) 
+                styleLinks.push(`css/${compName}.css`) 
               }
             }
             if(fs.existsSync(`components/${comp}/index.js`)){
-              await fs.promises.writeFile(`themes/${themeName}/toruf/components/${compName}/index.js`, compJs)
               let compJs = fs.readFileSync(`components/${comp}/index.js`)
+              await fs.promises.writeFile(`themes/${themeName}/toruf/components/${compName}/index.js`, compJs)
               if(mergeJs) indexJs += compJs;
               else {
-                let scriptlink = `themes/${themeName}/js/${comp}.js`
+                let scriptlink = `themes/${themeName}/site/js/${compName}.js`
                 await fs.promises.writeFile(scriptlink, compJs)
-                scriptLinks.push(`js/${comp}.js`) 
+                scriptLinks.push(`js/${compName}.js`) 
               }
             }
             if(svg) {
@@ -87,19 +86,19 @@ async function buildTheme(themeName, filename, components, svg, mergeCss, mergeJ
             }
           });
         }
-        else throw new Error(`Component ${compName} doesnt exist`)
+        else throw new Error(`Component ${comp} doesnt exist`)
       }
       else throw new Error(`Component section ${compSection} doesnt exist`)
     }
   }).then(async ()=> {
     if(mergeCss) await fs.promises.writeFile(`themes/${themeName}/site/css/${filename}.css`)
     if(mergeJs) await fs.promises.writeFile(`themes/${themeName}/site/js/${filename}.js`)
-    await saveHtml(themeName, filename, indexHtml, mergeCss, mergeJs)
-    await saveSvg(filename, indexSvg, svgHeights, svgStyles)
+    await saveHtml(themeName, filename, indexHtml, indexToruf, mergeCss, styleLinks, mergeJs, scriptLinks).catch((err) => {throw new Error(err)})
+    await saveSvg(themeName, filename, indexSvg, svgHeights, svgStyles).catch((err) => {throw new Error(err)})
   })
 }
 
-async function saveSvg(filename, svgs, heights, styles){
+async function saveSvg(themeName, filename, svgs, heights, styles){
   return new Promise((resolve) =>{
     let sizes = ['mobile','tablet','web']
     for(let size of sizes){
@@ -120,11 +119,11 @@ async function saveSvg(filename, svgs, heights, styles){
   })
 }
 
-async function saveHtml(themeName, filename, htmlBody, templateBody, mergeCss, mergeJs){
+async function saveHtml(themeName, filename, htmlBody, templateBody, mergeCss, styleLinks, mergeJs, scriptLinks){
   return new Promise(async (resolve) => {
     let scripts = ""
     if(mergeJs) scripts = `<script src="js/index.js"></script>\n`
-    else for(let src of srccriptLinks) scripts += `<script src="${src}"></script>\n`
+    else for(let src of scriptLinks) scripts += `<script src="${src}"></script>\n`
     let sheets = ""
     if(mergeCss) sheets = `<link rel="stylesheet" href="css/index.css">\n`
     else for(let ref of styleLinks) sheets += `<link rel="stylesheet" href="${ref}">\n`
@@ -179,13 +178,15 @@ function getSvgBody(svg, height, styles) {
     let newStyles = styles;
     let newHeight = height;
     for(let elem of elems){
-      let begin = svg.split(`<${elem}`, 2)[1]
-      let begin_tag = begin.split(">")[0]
-      let contents = begin.substr(begin.indexOf(">"), begin.indexOf("<"))
-      if(elem === 'svg') newHeight += begin_tag.split("viewBox=")[1].split('"')[1].split(" ")[2].valueOf()
-      else if(elem === 'style') newStyles += contents
-      svgBody = svgBody.replace(`<${elem+begin_tag}>`, "")
-      svgBody = svgBody.replace(`</${elem}>`, "")
+      if(svg.includes(`<${elem}`)){
+        let begin = svg.split(`<${elem}`, 2)[1]
+        let begin_tag = begin.split(">")[0]
+        let contents = begin.substr(begin.indexOf(">"), begin.indexOf("<"))
+        if(elem === 'svg') newHeight += begin_tag.split("viewBox=")[1].split('"')[1].split(" ")[2].valueOf()
+        else if(elem === 'style') newStyles += contents
+        svgBody = svgBody.replace(`<${elem+begin_tag}>`, "")
+        svgBody = svgBody.replace(`</${elem}>`, "")
+      }
     }
     resolve({"svg":svgBody, "height":newHeight, "styles":newStyles});
   })
