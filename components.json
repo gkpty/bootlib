@@ -1,12 +1,14 @@
 {
-  "navigation":{
+  "nav":{
     "ghost_nav":{},
     "flat_nav":{},
-    "standard_nav":{},
+    "standard":{
+      "title": "Standard Nav"
+    },
     "search_nav":{},
     "side_nav":{}
   },
-  "headers":{
+  "header":{
     "video_header":{},
     "split_header":{},
     "centered_title":{},
@@ -16,11 +18,11 @@
       "description":"A full sized header with an interactive SVG animation of a sunset and Panama City in the background."
     }
   },
-  "static_sections":{
+  "static_section":{
     "centered_section":{},
     "split_section":{}
   },
-  "dynamic_sections":{
+  "dynamic_section":{
     "spinning_cards":{},
     "checkered":{},
     "checkered_with_thumbnails":{},
@@ -29,11 +31,11 @@
     "team_section_round":{},
     "team_section_square":{}
   },
-  "footers":{
+  "footer":{
     "classic_footer":{},
     "large_footer":{}
   },
-  "forms":{
+  "form":{
     "default_form":{},
     "classic_bootstrap":{},
     "inline_form":{},
@@ -43,7 +45,7 @@
       "description":"A contact form with round input fields. The input fields have a glow animation when clicked."
     }
   },
-  "carousels":{
+  "carousel":{
     "testimonial_corusel":{}
   }
 }

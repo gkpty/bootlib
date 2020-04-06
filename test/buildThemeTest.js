@@ -1,3 +1,11 @@
-var {buildTheme} = require('./buildTheme')
+var {buildTheme} = require('../buildTheme')
 
-buildTheme("newTheme", "index", [], true, true, false)
+let components = [
+  'nav/standard',
+  'header/standard',
+  'static_section/split',
+  'static_section/standard',
+  'footer/standard'
+]
+
+buildTheme("newTheme", "index", components, true, true, false)

@@ -1,3 +1,3 @@
 var {buildHtmlPreview} = require('../componentPreview')
 
-buildHtmlPreview('headers/standard', true)
+buildHtmlPreview('forms/standard', false)
