@@ -165,7 +165,9 @@ async function addSvg(component, indexSvg, svgHeights, svgStyles){
     let sizes = ['mobile','tablet','web']
     for(let size of sizes){
       fs.promises.readFile(`${compPath}/${size}.svg`, 'utf8').then((svgComp) => {
+        //console.log(svgComp)
         getSvgBody(svgComp, svgHeights[size], svgStyles[size]).then((res) => {
+          //console.log(res.svg, '\n\n')
           indexSvg[size] += res.svg;
           svgHeights[size] += res.height;
           svgStyles[size] += res.styles;
@@ -176,21 +178,24 @@ async function addSvg(component, indexSvg, svgHeights, svgStyles){
   })
 }
 
-function getSvgBody(svg, height, styles) {
+function getSvgBody(svg) {
   return new Promise((resolve) => {
     let elems = ["svg","defs","style","title"];
     let svgBody = svg;
-    let newStyles = styles;
-    let newHeight = height;
+    let newStyles = "";
+    let newHeight = 0;
     for(let elem of elems){
-      if(svg.includes(`<${elem}`)){
-        let begin = svg.split(`<${elem}`, 2)[1]
+      if(svgBody.includes(`<${elem}`)){
+        let begin = svgBody.split(`<${elem}`, 2)[1]
         let begin_tag = begin.split(">")[0]
-        let contents = begin.substr(begin.indexOf(">"), begin.indexOf("<"))
-        if(elem === 'svg') newHeight += begin_tag.split("viewBox=")[1].split('"')[1].split(" ")[2].valueOf()
-        else if(elem === 'style') newStyles += contents
-        svgBody = svgBody.replace(`<${elem+begin_tag}>`, "")
-        svgBody = svgBody.replace(`</${elem}>`, "")
+        let contents = begin.substr(begin.indexOf(">")+1, begin.indexOf("<")-1)
+        if(elem === 'svg') newHeight = parseInt(begin_tag.split("viewBox=")[1].split('"')[1].split(" ")[2])
+        else if(elem === 'style') {
+          newStyles = contents
+          svgBody = svgBody.replace(contents, "")
+        }
+        else if(elem === 'title') svgBody = svgBody.replace(contents, "")
+        svgBody = svgBody.replace('<'+elem+begin_tag+'>', "").replace(`</${elem}>`, "")
       }
     }
     resolve({"svg":svgBody, "height":newHeight, "styles":newStyles});
